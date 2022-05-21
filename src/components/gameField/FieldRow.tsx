@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {GameCell} from "../utils/gameCell";
+import {GameCell} from "../../utils/gameCell";
 import FieldCell from "../fieldCell/FieldCell";
 
 interface propsInterface {

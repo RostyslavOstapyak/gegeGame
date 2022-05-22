@@ -7,6 +7,5 @@ export interface stateInterface {
 }
 
 export const fieldSelector = (state: stateInterface) => state.fieldReducer.field
-export const boardSelector = (state: stateInterface) => state.fieldReducer.board
 
 export const playerSelector = (state: stateInterface) => state.playerReducer.player

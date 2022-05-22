@@ -23,6 +23,14 @@ export class GameField {
 
     setPlayer(player: Player): GameCell[][] {
         // if field have no player find empty space for player
+
+        // перевірити чи є збережени плеєр
+        // якщо не збережено то це перша ітерація і треба зберегти переданого плеєра
+        // якщо є вже плеєр це його стара позиція
+        // обновоити позицію
+        // стерти плеєра в старій позиції
+        // обновити плеєра в обєкті
+
         if (!this.Player) this.Player = player;
 
 

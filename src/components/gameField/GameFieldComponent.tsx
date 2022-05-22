@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, { useEffect} from 'react';
 import FieldRow from "./FieldRow";
 import './gameField.css';
 import {Direction} from "../../utils/player";
@@ -36,7 +36,6 @@ const GameFieldComponent = () => {
         return () => document.removeEventListener("keyup", moveHandler);
     }, []);
 
-    console.log(field.GameField)
     const board = field.GameField
 
     return (

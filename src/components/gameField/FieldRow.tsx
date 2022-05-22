@@ -7,7 +7,7 @@ interface propsInterface {
 }
 
 const FieldRow: FC<propsInterface> = ({row}) => {
-    // console.log(row)
+
     return (
         <div className="field__row">
             {row.map((cellItem, index) => <FieldCell key={index} cell={cellItem}/>)}

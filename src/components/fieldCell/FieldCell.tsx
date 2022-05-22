@@ -3,6 +3,8 @@ import {GameCell} from "../../utils/gameCell";
 import './fieldCell.css';
 import {Content} from "../../utils/content";
 import PlayerComponent from "../player/PlayerComponent";
+import Grass from "../grass/Grass";
+import Rock from "../rock/Rock";
 
 interface propsInterface {
     cell: GameCell
@@ -10,14 +12,13 @@ interface propsInterface {
 
 const FieldCell: FC<propsInterface> = ({cell}) => {
 
-    if (cell.isPlayer) return <PlayerComponent/>
 
     return (
         <div className="field__cell">
-            x:{cell.x}
-            y:{cell.y}
+            {cell.isPlayer && <PlayerComponent/>}
+            {cell.content === Content.rock && <Rock/>}
+            {cell.content === Content.empty && <Grass/>}
         </div>
-
     );
 };
 

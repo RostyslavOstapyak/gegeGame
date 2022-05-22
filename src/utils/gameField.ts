@@ -6,7 +6,7 @@ import {Content} from "./content";
 export class GameField {
     GameField: GameCell[][] = [];
     // @ts-ignore
-    Player: Player ;
+    Player: Player;
 
 
     generateField(rowWidth: number = 10, rowHeight: number = 10) {
@@ -18,23 +18,12 @@ export class GameField {
             }
             this.GameField?.push(row);
         }
+        this.fillField();
         return this.GameField
     }
 
     setPlayer(player: Player): GameCell[][] {
-        // if field have no player find empty space for player
-
-        // перевірити чи є збережени плеєр
-        // якщо не збережено то це перша ітерація і треба зберегти переданого плеєра
-        // якщо є вже плеєр це його стара позиція
-        // обновоити позицію
-        // стерти плеєра в старій позиції
-        // обновити плеєра в обєкті
-
-        if (!this.Player) this.Player = player;
-
-
-        // if player place is no playable (taken with another object) no move for that position
+        if (!this.Player) this.Player = JSON.parse(JSON.stringify(player));
 
         const possibleLocation = this.GameField[player.x][player.y]
         const currentPlayerPosition = this.GameField[this.Player?.x][this.Player?.y]
@@ -42,15 +31,35 @@ export class GameField {
         if (possibleLocation.content === Content.empty || possibleLocation.content === Content.road) {
             currentPlayerPosition.isPlayer = false;
             possibleLocation.isPlayer = true;
+            this.Player = JSON.parse(JSON.stringify(player))
         }
 
         return this.GameField
     }
 
-    // fillField(player: Player) {
-    //     this.setPlayer(player)
-    //     // should have some more methods to fill field with objects to interact with
-    // }
+
+    private fillField() {
+        // should have some more methods to fill field with objects to interact with
+        // there should be not more than 10% of field with rocks
+        const gameArea = this.GameField.length * this.GameField[1].length
+        // there should be not more than 10% of field with rocks
+        const rockNumber = gameArea/10
+        // rocks mint have treasure inside
+        for (let i = 0; i < rockNumber; i++) {
+            const randomPosition =()=> Math.floor(Math.random() * (this.GameField.length ));
+            const newRock = {
+                x:randomPosition(),
+                y:randomPosition(),
+                isTreasure:false,
+                id:i,
+            }
+            console.log(this.GameField)
+            console.log(newRock)
+            this.GameField[newRock.x][newRock.y].content = Content.rock
+        }
+
+    }
+
 
     updateField() {
         return this.GameField

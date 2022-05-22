@@ -2,6 +2,9 @@ import {GameCell} from "./gameCell";
 import {Player} from "./player";
 import {Content} from "./content";
 
+interface errorInterface {
+    text: string
+}
 
 export class GameField {
     GameField: GameCell[][] = [];
@@ -22,9 +25,9 @@ export class GameField {
         return this.GameField
     }
 
-    setPlayer(player: Player): GameCell[][] {
+    setPlayer(player: Player): errorInterface | GameCell[][] {
         if (!this.Player) this.Player = JSON.parse(JSON.stringify(player));
-
+        console.log(player)
         const possibleLocation = this.GameField[player.x][player.y]
         const currentPlayerPosition = this.GameField[this.Player?.x][this.Player?.y]
 
@@ -34,28 +37,47 @@ export class GameField {
             this.Player = JSON.parse(JSON.stringify(player))
         }
 
+
+        if (possibleLocation.content === Content.tree) return ({text: "Ти не можеш ходити по деревах :("})
+        if (possibleLocation.content === Content.rock) return ({text: "Не можна взаємодіяти з цим обєктом"})
+
+
         return this.GameField
     }
 
 
     private fillField() {
         // should have some more methods to fill field with objects to interact with
-        // there should be not more than 10% of field with rocks
+
         const gameArea = this.GameField.length * this.GameField[1].length
         // there should be not more than 10% of field with rocks
-        const rockNumber = gameArea/10
+        const rockNumber = gameArea / 10
         // rocks mint have treasure inside
         for (let i = 0; i < rockNumber; i++) {
-            const randomPosition =()=> Math.floor(Math.random() * (this.GameField.length ));
+            const randomPosition = () => Math.floor(Math.random() * (this.GameField.length));
             const newRock = {
-                x:randomPosition(),
-                y:randomPosition(),
-                isTreasure:false,
-                id:i,
+                x: randomPosition(),
+                y: randomPosition(),
+                isTreasure: false,
+                id: i,
             }
-            console.log(this.GameField)
-            console.log(newRock)
-            this.GameField[newRock.x][newRock.y].content = Content.rock
+            // check if cell is free
+            if (this.GameField[newRock.x][newRock.y].content === Content.empty)
+                this.GameField[newRock.x][newRock.y].content = Content.rock
+        }
+
+        // there should be not more than 10% of field with threes
+        const treesNumber = gameArea / 10
+        for (let i = 0; i < treesNumber; i++) {
+            const randomPosition = () => Math.floor(Math.random() * (this.GameField.length));
+            const newTree = {
+                x: randomPosition(),
+                y: randomPosition(),
+                isTreasure: false,
+                id: i,
+            }
+            if (this.GameField[newTree.x][newTree.y].content === Content.empty)
+                this.GameField[newTree.x][newTree.y].content = Content.tree
         }
 
     }

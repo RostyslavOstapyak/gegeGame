@@ -3,4 +3,5 @@ export enum Content {
     road="road",
     rock="rock",
     empty="empty",
+    tree="tree"
 }

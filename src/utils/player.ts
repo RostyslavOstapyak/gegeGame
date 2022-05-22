@@ -1,18 +1,16 @@
 import {Content} from "./content";
 
 export enum Direction {
-    up = "up",
-    down = "down",
-    left = "left",
-    right = "right"
+    up = 87,
+    down = 83,
+    left = 65,
+    right = 68
 }
 
 export class Player {
     x: number;
     y: number;
     content: Content;
-    static y: number;
-    static x: number;
 
     constructor(x: number, y: number) {
         this.x = x;
@@ -20,8 +18,8 @@ export class Player {
         this.content = Content.player;
     }
 
-    movePlayer(direction: Direction) {
-        switch (direction) {
+    movePlayer(key: Direction) {
+        switch (key) {
             case Direction.up:
                 this.y -= 1
                 break;

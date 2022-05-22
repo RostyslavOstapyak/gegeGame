@@ -5,9 +5,12 @@ import {Content} from "./content";
 
 export class GameField {
     GameField: GameCell[][] = [];
+    // @ts-ignore
+    Player: Player ;
 
 
-    generateField(rowWidth: number, rowHeight: number) {
+    generateField(rowWidth: number = 10, rowHeight: number = 10) {
+        this.GameField = []
         for (let x = 0; x < rowWidth; x += 1) {
             const row: GameCell[] = []
             for (let y = 0; y < rowHeight; y += 1) {
@@ -15,27 +18,33 @@ export class GameField {
             }
             this.GameField?.push(row);
         }
+        return this.GameField
     }
 
-    setPlayer(newPlayer: Player, oldPlayer: Player | void): GameCell[][] {
-        const possibleLocation = this.GameField[newPlayer.x][newPlayer.y]
+    setPlayer(player: Player): GameCell[][] {
+        // if field have no player find empty space for player
+        if (!this.Player) this.Player = player;
+
+
+        // if player place is no playable (taken with another object) no move for that position
+
+        const possibleLocation = this.GameField[player.x][player.y]
+        const currentPlayerPosition = this.GameField[this.Player?.x][this.Player?.y]
 
         if (possibleLocation.content === Content.empty || possibleLocation.content === Content.road) {
+            currentPlayerPosition.isPlayer = false;
             possibleLocation.isPlayer = true;
-
-            if (!oldPlayer) return this.GameField;
-            this.GameField[oldPlayer.x][oldPlayer.y].isPlayer = false;
         }
 
         return this.GameField
     }
 
-    fillField(player:Player){
-        this.setPlayer(player)
-        // should have some more methods to fill field with objects to interact with
-    }
+    // fillField(player: Player) {
+    //     this.setPlayer(player)
+    //     // should have some more methods to fill field with objects to interact with
+    // }
 
-    updateField(){
+    updateField() {
         return this.GameField
     }
 

@@ -20,13 +20,13 @@ export class Player {
         this.content = Content.player;
     }
 
-    static movePlayer(direction: Direction) {
+    movePlayer(direction: Direction) {
         switch (direction) {
             case Direction.up:
-                this.y += 1
+                this.y -= 1
                 break;
             case Direction.down:
-                this.y -= 1
+                this.y += 1
                 break;
             case Direction.left:
                 this.x -= 1

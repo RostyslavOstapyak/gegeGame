@@ -10,7 +10,7 @@ interface propsInterface {
 
 const FieldCell: FC<propsInterface> = ({cell}) => {
 
-    if (cell.content === Content.player) return <PlayerComponent/>
+    if (cell.isPlayer) return <PlayerComponent/>
 
     return (
         <div className="field__cell">

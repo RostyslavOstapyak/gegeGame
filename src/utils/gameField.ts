@@ -35,6 +35,10 @@ export class GameField {
         // should have some more methods to fill field with objects to interact with
     }
 
+    updateField(){
+        return this.GameField
+    }
+
 
     // generateItem(content){}
     // should generate cell content if cell content provided

@@ -1,7 +1,8 @@
 export enum Content {
     player = "player",
-    road="road",
-    rock="rock",
-    empty="empty",
-    tree="tree"
+    road = "road",
+    rock = "rock",
+    empty = "empty",
+    tree = "tree",
+    enemy = "enemy"
 }

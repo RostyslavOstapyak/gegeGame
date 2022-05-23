@@ -25,7 +25,6 @@ const GameFieldComponent = () => {
     const moveHandler = (e: any) => {
 
         if (!player) return
-
         if (typeof field.movePlayer(e.keyCode) === "string") {
             dispatch(errorActionCreator(field.movePlayer(e.keyCode)))
         } else {
@@ -40,7 +39,6 @@ const GameFieldComponent = () => {
 
     const board = field.GameField
     const error = useSelector(errorSelector);
-    console.log(error)
 
     return (
         <div className="field">

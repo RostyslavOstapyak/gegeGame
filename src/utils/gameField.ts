@@ -44,6 +44,9 @@ export class GameField {
         if (key === Direction.left) playerCopy.x -= 1
         if (key === Direction.right) playerCopy.x += 1
 
+        if (playerCopy.x < 0 || playerCopy.x >= this.GameField.length) return "Ой хто це у нас випав за край світу? :("
+        if (playerCopy.y < 0 || playerCopy.y >= this.GameField.length) return "Ой хто це у нас випав за край світу? :("
+
         const possibleLocation = this.GameField[playerCopy.x][playerCopy.y]
         const currentPlayerPosition = this.GameField[this.Player?.x][this.Player?.y]
 
@@ -99,7 +102,11 @@ export class GameField {
     }
 
 
-    updateField() {
+    updateField(field: GameField | void) {
+        if (field) this.GameField = JSON.parse(JSON.stringify(field.GameField));
+        if (field) this.Player = JSON.parse(JSON.stringify(field.Player))
+
+
         return this.GameField
     }
 

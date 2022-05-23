@@ -11,12 +11,14 @@ const initialState =
     }
 
 
-export function fieldReducer(state = initialState, action: any) {
+export function fieldReducer(state = initialState, action: { type: string, payload: GameField }) {
     switch (action.type) {
         case FIELD_SET: {
+            const updatedField = new GameField()
+            updatedField.updateField(action.payload)
             return {
                 ...state,
-                field: {...action.payload}
+                field: updatedField
             }
         }
 

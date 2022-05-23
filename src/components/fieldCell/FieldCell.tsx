@@ -13,7 +13,6 @@ interface propsInterface {
 
 const FieldCell: FC<propsInterface> = ({cell}) => {
 
-
     return (
         <div className="field__cell">
             {cell.isPlayer && <PlayerComponent/>}

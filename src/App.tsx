@@ -5,7 +5,7 @@ import Inventory from "./components/inventory/Inventory";
 
 
 function App() {
-    const [isInventory, setIsInventory] = useState(true);
+    const [isInventory, setIsInventory] = useState(false);
 
     const openInventoryHandler = (e: any) => {
         if (e.keyCode === 73) setIsInventory(!isInventory)

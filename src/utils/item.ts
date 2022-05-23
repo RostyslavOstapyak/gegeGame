@@ -26,19 +26,19 @@ export class Item {
     name: string
     quality: string
     type: string
-    properties: any
+    properties: itemPropertiesInterface
     price: number
     id: number
     level: number
 
-    constructor(field: GameField) {
+    constructor(level: number) {
         // don't change order cuz it mint brake
         this.type = this.generateType()
         this.quality = this.generateQuality()
         this.properties = this.generateProperties()
         this.name = this.generateName()
         this.id = Math.random()
-        this.level = field.level + 1
+        this.level = level + 1
         this.price = this.generatePrice()
         // this one should be updated
     }
@@ -52,9 +52,10 @@ export class Item {
             damage: false,
             value: 0
         }
+        // this one returns NaN fix it
         const qualityModifier = itemsQuality.indexOf(this.quality)
         if (this.type === "sword" || this.type === "secondary") result.damage = true
-        if (result.damage) result.value = this.level * qualityModifier + Math.floor(Math.random() * 10)
+        if (result.damage) result.value = this.level * (qualityModifier + Math.floor(Math.random() * 10))
 
         return result
     }

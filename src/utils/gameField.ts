@@ -11,6 +11,18 @@ export enum Direction {
     right = 68
 }
 
+export enum actionResult {
+    tree = "Ви знайшли дерево :)",
+    rock = "Ви не можете взаємодіяти з цим обєктом :(",
+    worldEdge = "Ви добрались до края світу :)",
+    enemy = "Ви перемогли ворога, отримайте винагороду!"
+}
+
+interface actionResultInterface {
+    message: actionResult
+    value: Enemy | void
+}
+
 export class GameField {
     GameField: GameCell[][] = [];
     // @ts-ignore
@@ -38,7 +50,7 @@ export class GameField {
         return this.GameField
     }
 
-    movePlayer(key: number): GameCell[][] | string {
+    movePlayer(key: number): { message: actionResult } | void {
         const playerCopy = JSON.parse(JSON.stringify(this.Player))
 
         if (key === Direction.up) playerCopy.y -= 1
@@ -46,10 +58,14 @@ export class GameField {
         if (key === Direction.left) playerCopy.x -= 1
         if (key === Direction.right) playerCopy.x += 1
 
-        if (playerCopy.x < 0 || playerCopy.x >= this.GameField.length) return "Ой хто це у нас випав за край світу? :("
-        if (playerCopy.y < 0 || playerCopy.y >= this.GameField.length) return "Ой хто це у нас випав за край світу? :("
+        if (playerCopy.x < 0
+            || playerCopy.x >= this.GameField.length
+            || playerCopy.y < 0
+            || playerCopy.y >= this.GameField.length) {
+            return {message: actionResult.worldEdge}
+        }
 
-        const possibleLocation = this.GameField[playerCopy.x][playerCopy.y]
+        const possibleLocation: GameCell = this.GameField[playerCopy.x][playerCopy.y]
         const currentPlayerPosition = this.GameField[this.Player?.x][this.Player?.y]
 
         if (possibleLocation.content === Content.empty || possibleLocation.content === Content.road) {
@@ -58,14 +74,12 @@ export class GameField {
             this.Player = JSON.parse(JSON.stringify(playerCopy))
         }
 
-        if (possibleLocation.content === Content.tree) return "Ти не можеш ходити по деревах :("
-        if (possibleLocation.content === Content.rock) return "Не можна взаємодіяти з цим обєктом"
-        if (possibleLocation.content === Content.enemy) return "Enemy found ddddddddd"
+        if (possibleLocation.content === Content.tree) return {message: actionResult.tree}
+        if (possibleLocation.content === Content.rock) return {message: actionResult.rock}
+        if (possibleLocation.content === Content.enemy) return this.enemyInteraction(possibleLocation)
 
         this.setPlayer(this.Player)
-        return this.updateField()
-
-
+        return
     }
 
     private fillField() {
@@ -112,11 +126,13 @@ export class GameField {
     }
 
     updateField(field: GameField | void) {
-        if (field) this.GameField = JSON.parse(JSON.stringify(field.GameField));
-        if (field) this.Player = JSON.parse(JSON.stringify(field.Player))
+        if (field) {
+            this.GameField = JSON.parse(JSON.stringify(field.GameField));
+            this.Player = JSON.parse(JSON.stringify(field.Player))
+            this.enemies = JSON.parse(JSON.stringify(field.enemies))
+        }
 
-
-        return this.GameField
+        return this
     }
 
     generateEnemies(gameArea: number) {
@@ -124,13 +140,26 @@ export class GameField {
         const enemiesNumber = gameArea / 20
 
         for (let i = 0; i < enemiesNumber; i++) {
-            const randomPosition = () => Math.floor(Math.random() * (this.GameField.length));
-            const newEnemy = new Enemy(randomPosition(), randomPosition())
-            // check if cell is free
-            if (this.GameField[newEnemy.x][newEnemy.y].content === Content.empty) {
-                this.GameField[newEnemy.x][newEnemy.y].content = Content.enemy
-                this.enemies.push(newEnemy)
+
+            const generateEnemy = () => {
+                const randomPosition = () => Math.floor(Math.random() * (this.GameField.length));
+                const newEnemy = new Enemy(randomPosition(), randomPosition(), this)
+                if (this.GameField[newEnemy.x][newEnemy.y].content !== Content.empty) generateEnemy()
+                return newEnemy
             }
+            const createdEnemy = generateEnemy()
+            this.GameField[createdEnemy.x][createdEnemy.y].content = Content.enemy
+            this.enemies.push(createdEnemy)
+
+        }
+    }
+
+    enemyInteraction(location: GameCell) {
+        const enemy = this.enemies.find(enemy => enemy.x === location.x && enemy.y === location.y)
+        console.log(enemy)
+        return {
+            message: actionResult.enemy,
+            value: enemy
         }
     }
 }

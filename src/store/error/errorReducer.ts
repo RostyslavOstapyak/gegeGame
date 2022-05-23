@@ -1,12 +1,16 @@
 import {ERROR_CLEAR, ERROR_SET} from "./errorActions";
+import {Enemy} from "../../utils/enemy";
 
 
 export interface errorInterface {
-    error: string
+    message: string
+    value: Enemy | null
+
 }
 
 const initialState = {
-    error: ""
+    message: "",
+    value: null
 }
 
 export function errorReducer(state: errorInterface = initialState, action: any) {
@@ -14,12 +18,14 @@ export function errorReducer(state: errorInterface = initialState, action: any) 
         case ERROR_SET:
             return {
                 ...state,
-                error: action.payload
+                message: action.payload.message,
+                value: action.payload.value
             }
         case ERROR_CLEAR :
             return {
                 ...state,
-                error: ""
+                message: "",
+                value: null
             }
         default:
             return {...state}

@@ -5,7 +5,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {setBoardCreator, setFieldCreator} from "../../store/field/fieldActions";
 import {errorSelector, fieldSelector, playerSelector} from "../../store/selector";
 import {errorActionCreator, errorClearCreator} from "../../store/error/errorActions";
-import {Item} from "../../utils/item";
 import Dialog from "../dialog/Dialog";
 
 
@@ -26,8 +25,10 @@ const GameFieldComponent = () => {
     const moveHandler = (e: any) => {
 
         if (!player) return
-        if (typeof field.movePlayer(e.keyCode) === "string") {
-            dispatch(errorActionCreator(field.movePlayer(e.keyCode)))
+        const moveResult = field.movePlayer(e.keyCode)
+        console.log(moveResult)
+        if (moveResult) {
+            dispatch(errorActionCreator(moveResult))
         } else {
             dispatch(setFieldCreator(field));
         }
@@ -41,14 +42,15 @@ const GameFieldComponent = () => {
     const board = field.GameField
     const error = useSelector(errorSelector);
 
-    const item = new Item(field)
-    console.log(item)
-
     return (
         <div className="field">
             {board && board.map((rowItem, index) => <FieldRow key={index} row={rowItem}/>
             )}
-            {error && <Dialog message={error} handlerAccept={errorClearCreator} handlerDismiss={undefined}/>}
+            {error.message && <Dialog
+                message={error.message}
+                handlerAccept={errorClearCreator}
+                handlerDismiss={undefined}
+                item={error.value ? error.value : null}/>}
         </div>
     );
 };

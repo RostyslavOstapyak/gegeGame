@@ -4,9 +4,9 @@ import './gameField.css';
 import {useDispatch, useSelector} from "react-redux";
 import {setBoardCreator, setFieldCreator} from "../../store/field/fieldActions";
 import {errorSelector, fieldSelector, playerSelector} from "../../store/selector";
-import {errorActionCreator} from "../../store/error/errorActions";
-import ErrorPopup from "../errorPopup/ErrorPopup";
+import {errorActionCreator, errorClearCreator} from "../../store/error/errorActions";
 import {Item} from "../../utils/item";
+import Dialog from "../dialog/Dialog";
 
 
 const GameFieldComponent = () => {
@@ -48,7 +48,7 @@ const GameFieldComponent = () => {
         <div className="field">
             {board && board.map((rowItem, index) => <FieldRow key={index} row={rowItem}/>
             )}
-            {error && <ErrorPopup text={error}/>}
+            {error && <Dialog message={error} handlerAccept={errorClearCreator} handlerDismiss={undefined}/>}
         </div>
     );
 };

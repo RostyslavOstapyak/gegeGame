@@ -19,7 +19,7 @@ function App() {
         <div className="App">
             {/*<Interface/>*/}
             <GameFieldComponent/>
-            {isInventory && <Inventory/>}
+            {isInventory && <Inventory onClose={setIsInventory}/>}
         </div>
     );
 }

@@ -1,5 +1,6 @@
-import {Player} from "../utils/player";
+import {Player} from "../../utils/player";
 import {PLAYER_SET_PLAYER} from "./playerActions";
+import {initialPlayer} from "../../utils/initialPlayer";
 
 
 export interface playerInterface {
@@ -8,7 +9,7 @@ export interface playerInterface {
 
 const initialState =
     {
-        player: new Player(1, 5)
+        player: initialPlayer
     }
 
 

@@ -2,8 +2,10 @@ import React, {useEffect} from 'react';
 import FieldRow from "./FieldRow";
 import './gameField.css';
 import {useDispatch, useSelector} from "react-redux";
-import {setBoardCreator, setFieldCreator} from "../../store/fieldActions";
-import {fieldSelector, playerSelector} from "../../store/selector";
+import {setBoardCreator, setFieldCreator} from "../../store/field/fieldActions";
+import {errorSelector, fieldSelector, playerSelector} from "../../store/selector";
+import {errorActionCreator} from "../../store/error/errorActions";
+import ErrorPopup from "../errorPopup/ErrorPopup";
 
 
 const GameFieldComponent = () => {
@@ -17,18 +19,18 @@ const GameFieldComponent = () => {
         field.generateField()
         dispatch(setBoardCreator(field.updateField()))
     }
+
     if (!field.Player) field.setPlayer(player)
 
     const moveHandler = (e: any) => {
 
         if (!player) return
-        player.movePlayer(e.keyCode)
-        // if setPlayer have no error then dispatch new field
-        // if (field.setPlayer(player).text) {
+
+        if (typeof field.movePlayer(e.keyCode) === "string") {
+            dispatch(errorActionCreator(field.movePlayer(e.keyCode)))
+        } else {
             dispatch(setFieldCreator(field));
-        // } else {
-            // dispatch(errorCreator(field.setPlayer(player).text))
-        // }
+        }
     }
 
     useEffect(() => {
@@ -37,11 +39,14 @@ const GameFieldComponent = () => {
     }, []);
 
     const board = field.GameField
+    const error = useSelector(errorSelector);
+    console.log(error)
 
     return (
         <div className="field">
             {board && board.map((rowItem, index) => <FieldRow key={index} row={rowItem}/>
             )}
+            {error && <ErrorPopup text={error}/>}
         </div>
     );
 };

@@ -1,9 +1,13 @@
 import {GameCell} from "./gameCell";
 import {Player} from "./player";
 import {Content} from "./content";
+import {initialPlayer} from "./initialPlayer";
 
-interface errorInterface {
-    text: string
+export enum Direction {
+    up = 87,
+    down = 83,
+    left = 65,
+    right = 68
 }
 
 export class GameField {
@@ -12,7 +16,7 @@ export class GameField {
     Player: Player;
 
 
-    generateField(rowWidth: number = 10, rowHeight: number = 10) {
+    generateField(rowWidth: number = 11, rowHeight: number = 11) {
         this.GameField = []
         for (let x = 0; x < rowWidth; x += 1) {
             const row: GameCell[] = []
@@ -22,29 +26,41 @@ export class GameField {
             this.GameField?.push(row);
         }
         this.fillField();
+        this.setPlayer(initialPlayer);
         return this.GameField
     }
 
-    setPlayer(player: Player): errorInterface | GameCell[][] {
+    setPlayer(player: Player): GameCell[][] {
         if (!this.Player) this.Player = JSON.parse(JSON.stringify(player));
-        console.log(player)
-        const possibleLocation = this.GameField[player.x][player.y]
+        this.GameField[this.Player.x][this.Player.y].isPlayer = true;
+        return this.GameField
+    }
+
+    movePlayer(key: number): GameCell[][] | string {
+        const playerCopy = JSON.parse(JSON.stringify(this.Player))
+
+        if (key === Direction.up) playerCopy.y -= 1
+        if (key === Direction.down) playerCopy.y += 1
+        if (key === Direction.left) playerCopy.x -= 1
+        if (key === Direction.right) playerCopy.x += 1
+
+        const possibleLocation = this.GameField[playerCopy.x][playerCopy.y]
         const currentPlayerPosition = this.GameField[this.Player?.x][this.Player?.y]
 
         if (possibleLocation.content === Content.empty || possibleLocation.content === Content.road) {
             currentPlayerPosition.isPlayer = false;
             possibleLocation.isPlayer = true;
-            this.Player = JSON.parse(JSON.stringify(player))
+            this.Player = JSON.parse(JSON.stringify(playerCopy))
         }
 
+        if (possibleLocation.content === Content.tree) return "Ти не можеш ходити по деревах :("
+        if (possibleLocation.content === Content.rock) return "Не можна взаємодіяти з цим обєктом"
 
-        if (possibleLocation.content === Content.tree) return ({text: "Ти не можеш ходити по деревах :("})
-        if (possibleLocation.content === Content.rock) return ({text: "Не можна взаємодіяти з цим обєктом"})
+        this.setPlayer(this.Player)
+        return this.updateField()
 
 
-        return this.GameField
     }
-
 
     private fillField() {
         // should have some more methods to fill field with objects to interact with

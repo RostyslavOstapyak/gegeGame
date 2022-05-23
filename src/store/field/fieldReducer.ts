@@ -1,6 +1,6 @@
 import {FIELD_SET, FIELD_SET_BOARD} from "./fieldActions";
-import {GameField} from "../utils/gameField";
-import {GameCell} from "../utils/gameCell";
+import {GameField} from "../../utils/gameField";
+import {GameCell} from "../../utils/gameCell";
 
 export interface fieldInterface {
     field: GameField

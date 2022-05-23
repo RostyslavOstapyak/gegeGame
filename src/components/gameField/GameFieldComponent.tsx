@@ -36,7 +36,7 @@ const GameFieldComponent = () => {
     useEffect(() => {
         document.addEventListener("keyup", moveHandler)
         return () => document.removeEventListener("keyup", moveHandler);
-    }, []);
+    });
 
     const board = field.GameField
     const error = useSelector(errorSelector);

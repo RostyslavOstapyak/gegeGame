@@ -16,6 +16,7 @@ export class GameField {
     // @ts-ignore
     Player: Player;
     enemies: Enemy[] = [];
+    level: number = 1;
 
     generateField(rowWidth: number = 11, rowHeight: number = 11) {
         this.GameField = []

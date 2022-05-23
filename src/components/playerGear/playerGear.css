@@ -1,0 +1,44 @@
+.player-gear {
+    width: 40%;
+    height: 100%;
+    background-color: #444444;
+    border-radius: 0 12px 12px 0;
+    position: relative;
+}
+
+.gear__cell {
+    width: 4em;
+    height: 4em;
+    border: 1px solid black;
+    border-radius: 12px;
+    background-color: #2b2b2b;
+    position: absolute;
+}
+
+.head {
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.armor {
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.boots {
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.weapon {
+    top: 40%;
+    left: 10%;
+}
+
+.secondary {
+    top: 40%;
+    left: 70%;
+}

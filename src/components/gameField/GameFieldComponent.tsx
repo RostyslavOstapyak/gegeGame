@@ -6,6 +6,7 @@ import {setBoardCreator, setFieldCreator} from "../../store/field/fieldActions";
 import {errorSelector, fieldSelector, playerSelector} from "../../store/selector";
 import {errorActionCreator} from "../../store/error/errorActions";
 import ErrorPopup from "../errorPopup/ErrorPopup";
+import {Item} from "../../utils/item";
 
 
 const GameFieldComponent = () => {
@@ -39,6 +40,9 @@ const GameFieldComponent = () => {
 
     const board = field.GameField
     const error = useSelector(errorSelector);
+
+    const item = new Item(field)
+    console.log(item)
 
     return (
         <div className="field">

@@ -31,7 +31,7 @@ const Dialog = () => {
                     {item.img &&
                         <img
                             src={`../../assets/${item.name}.jpg`}
-                            alt={`${item.name} picture`}/>}
+                            alt={`${item.name}`}/>}
                     <span>{item.name}</span>
                     <br/>
                     <span>{item.properties.level}</span>

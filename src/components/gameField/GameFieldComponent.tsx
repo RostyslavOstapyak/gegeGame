@@ -27,7 +27,6 @@ const GameFieldComponent = () => {
 
         if (!player) return
         const moveResult = field.movePlayer(e.keyCode)
-        console.log(moveResult)
         if (moveResult.isError || moveResult.isMessage) {
             dispatch(errorActionCreator(moveResult))
         } else {

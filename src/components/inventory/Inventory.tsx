@@ -1,6 +1,8 @@
 import React, {Dispatch, FC, SetStateAction} from 'react';
 import './inventory.css'
 import PlayerGear from "../playerGear/PlayerGear";
+import {useSelector} from "react-redux";
+import {playerSelector} from "../../store/selector";
 
 interface propsInterface {
     onClose: Dispatch<SetStateAction<boolean>>
@@ -8,7 +10,8 @@ interface propsInterface {
 
 const Inventory: FC<propsInterface> = ({onClose}) => {
     // should get player.inventory [] items
-
+    const player = useSelector(playerSelector)
+    console.log(player)
 
     return (
         <div className="inventory__field">

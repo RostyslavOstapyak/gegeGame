@@ -75,7 +75,6 @@ export class GameField {
             || playerCopy.y >= this.GameField.length) {
             result.message = actionResult.worldEdge
             result.isMessage = true;
-            console.log(result)
             return result
         }
 

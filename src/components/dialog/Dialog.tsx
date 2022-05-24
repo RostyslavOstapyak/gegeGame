@@ -3,32 +3,47 @@ import {useDispatch, useSelector} from "react-redux";
 import './dialog.css'
 import {dialogMessageSelector} from "../../store/selector";
 import {errorClearCreator} from "../../store/error/errorActions";
+import {playerAcceptItemCreator} from "../../store/player/playerActions";
 
 
 const Dialog = () => {
     const dispatch = useDispatch();
     const content = useSelector(dialogMessageSelector);
+
     const handlerDismiss = () => {
         dispatch(errorClearCreator());
     }
+    const handlerAccept = () => {
+        dispatch(playerAcceptItemCreator(content.payload.treasure));
+        dispatch(errorClearCreator());
+    }
+
 
     const {message} = content
+    const item = content.payload.treasure ? content.payload.treasure : null
+
 
     return (
         <div className="dialog">
             <div className="dialog__field">
                 <h3 className="dialog__content">{message}</h3>
-                {/*{item.treasure && <div>*/}
-                {/*    <span>{item.treasure.name}</span>*/}
-                {/*    <br/>*/}
-                {/*    <span>{item.treasure.properties.level}</span>*/}
-                {/*    <br/>*/}
-                {/*    <span>{item.treasure.properties.value} {item.treasure.properties.damage ? "dmg" : "arm"}</span>*/}
-                {/*    <br/>*/}
-                {/*</div>*/}
-                {/*}*/}
-                {/*<button className="dialog__button" onClick={() => dispatch(handlerAccept())}>Окау</button>*/}
-                {/*{handlerDismiss &&*/}
+                {item && <div>
+                    {item.img &&
+                        <img
+                            src={`../../assets/${item.name}.jpg`}
+                            alt={`${item.name} picture`}/>}
+                    <span>{item.name}</span>
+                    <br/>
+                    <span>{item.properties.level}</span>
+                    <br/>
+                    <span>
+                        {item.properties.value} {item.properties.damage ? "dmg" : "armor"}
+                    </span>
+                    <br/>
+                </div>
+                }
+                <button className="dialog__button" onClick={handlerAccept}>Accept Item</button>
+
                 <button
                     className="dialog__button"
                     onClick={handlerDismiss}>Dismiss

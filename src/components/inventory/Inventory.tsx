@@ -1,107 +1,71 @@
-import React, {Dispatch, FC, SetStateAction} from 'react';
+import React, {Dispatch, FC, SetStateAction, useState} from 'react';
 import './inventory.css'
 import PlayerGear from "../playerGear/PlayerGear";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {playerSelector} from "../../store/selector";
+import InventoryCell from "./InventoryCell";
+import {inventoryCellInterface} from "../../utils/player";
+import {setPlayerCreator} from "../../store/player/playerActions";
 
 interface propsInterface {
     onClose: Dispatch<SetStateAction<boolean>>
 }
 
+let currentItem: any;
 const Inventory: FC<propsInterface> = ({onClose}) => {
-    // should get player.inventory [] items
+
+
     const player = useSelector(playerSelector)
-    console.log(player)
+    const inventory = player.inventory
+    const dispatch = useDispatch();
+
+    const dragStartHandler = (item: inventoryCellInterface) => {
+        currentItem = item;
+    }
+
+    const dropHandler = (item: inventoryCellInterface) => {
+        if (!currentItem) return
+        if (player.isInventorySlotFree(item.id)) {
+            console.log(item.id)
+            const updatedPlayer = player.addItemToInventory(currentItem, item.id)
+            console.log(updatedPlayer)
+            dispatch(setPlayerCreator(updatedPlayer))
+        }
+        currentItem = null;
+    }
+
+    const dragOverHandler = (e: any) => {
+        e.preventDefault()
+    }
 
     return (
         <div className="inventory__field">
             <button
                 className="close btn"
-                // @ts-ignore
                 onClick={() => onClose(false)}
             >
                 X
             </button>
             <div className="inventory">
                 <ul className="inventory__list">
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
-                    <li className="inventory__cell"></li>
+                    {/*// @ts-ignore*/}
+                    {inventory.map(el =>
+                        <li
+                            key={el.id}
+                            className="inventory__cell"
+
+                            onDragStart={() => {
+                                dragStartHandler(el)
+                            }}
+                            onDragOver={dragOverHandler}
+                            onDrop={(e) => {
+                                e.preventDefault()
+                                dropHandler(el)
+                            }}>
+                            <InventoryCell key={el.id} item={el}/>
+                        </li>)}
                 </ul>
+                <div className="inventory__trash"/>
                 <PlayerGear/>
             </div>
         </div>

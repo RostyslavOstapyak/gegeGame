@@ -1,26 +1,30 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import './dialog.css'
-import {dialogMessageSelector} from "../../store/selector";
+import {dialogMessageSelector, playerSelector} from "../../store/selector";
 import {errorClearCreator} from "../../store/error/errorActions";
-import {playerAcceptItemCreator} from "../../store/player/playerActions";
+import {setPlayerCreator} from "../../store/player/playerActions";
 
 
 const Dialog = () => {
     const dispatch = useDispatch();
     const content = useSelector(dialogMessageSelector);
+    const player = useSelector(playerSelector)
 
     const handlerDismiss = () => {
         dispatch(errorClearCreator());
     }
     const handlerAccept = () => {
-        dispatch(playerAcceptItemCreator(content.payload.treasure));
+        if (content.payload.treasure.name) {
+
+            const updatedPlayer = player.addItemToInventory(content.payload.treasure);
+            dispatch(setPlayerCreator(updatedPlayer));
+        }
         dispatch(errorClearCreator());
     }
 
 
     const item = content.payload ? content.payload.treasure : null
-    console.log(item)
     const message = content.message
 
     return (

@@ -8,7 +8,6 @@ import {errorActionCreator} from "../../store/error/errorActions";
 
 import ErrorBanner from "../errorBanner/ErrorBanner";
 import Dialog from "../dialog/Dialog";
-import {Item} from "../../utils/item";
 
 
 const GameFieldComponent = () => {
@@ -42,9 +41,6 @@ const GameFieldComponent = () => {
 
     const board = field.GameField
     const actionMessage = useSelector(dialogMessageSelector);
-
-    const newItem = new Item(1);
-    console.log(newItem)
 
     return (
         <div className="field">

@@ -3,13 +3,14 @@ import FieldRow from "./FieldRow";
 import './gameField.css';
 import {useDispatch, useSelector} from "react-redux";
 import {setBoardCreator, setFieldCreator} from "../../store/field/fieldActions";
-import {errorSelector, fieldSelector, playerSelector} from "../../store/selector";
-import {errorActionCreator, errorClearCreator} from "../../store/error/errorActions";
+import {dialogMessageSelector, fieldSelector, playerSelector} from "../../store/selector";
+import {errorActionCreator} from "../../store/error/errorActions";
+
+import ErrorBanner from "../errorBanner/ErrorBanner";
 import Dialog from "../dialog/Dialog";
 
 
 const GameFieldComponent = () => {
-
     const dispatch = useDispatch();
 
     const player = useSelector(playerSelector);
@@ -27,7 +28,7 @@ const GameFieldComponent = () => {
         if (!player) return
         const moveResult = field.movePlayer(e.keyCode)
         console.log(moveResult)
-        if (moveResult) {
+        if (moveResult.isError || moveResult.isMessage) {
             dispatch(errorActionCreator(moveResult))
         } else {
             dispatch(setFieldCreator(field));
@@ -40,17 +41,14 @@ const GameFieldComponent = () => {
     });
 
     const board = field.GameField
-    const error = useSelector(errorSelector);
+    const actionMessage = useSelector(dialogMessageSelector);
 
     return (
         <div className="field">
             {board && board.map((rowItem, index) => <FieldRow key={index} row={rowItem}/>
             )}
-            {error.message && <Dialog
-                message={error.message}
-                handlerAccept={errorClearCreator}
-                handlerDismiss={undefined}
-                item={error.value ? error.value : null}/>}
+            {actionMessage.isError && <ErrorBanner text={actionMessage.message}/>}
+            {actionMessage.isMessage && <Dialog/>}
         </div>
     );
 };

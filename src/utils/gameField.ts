@@ -15,12 +15,15 @@ export enum actionResult {
     tree = "Ви знайшли дерево :)",
     rock = "Ви не можете взаємодіяти з цим обєктом :(",
     worldEdge = "Ви добрались до края світу :)",
-    enemy = "Ви перемогли ворога, отримайте винагороду!"
+    enemy = "Ви перемогли ворога, отримайте винагороду!",
+    empty = "",
 }
 
-interface actionResultInterface {
+export interface actionResultInterface {
     message: actionResult
-    value: Enemy | void
+    isError: boolean
+    isMessage: boolean
+    payload: any
 }
 
 export class GameField {
@@ -50,19 +53,30 @@ export class GameField {
         return this.GameField
     }
 
-    movePlayer(key: number): { message: actionResult } | void {
+    movePlayer(key: number): actionResultInterface {
         const playerCopy = JSON.parse(JSON.stringify(this.Player))
+        const result = {
+            message: actionResult.empty,
+            isError: false,
+            isMessage: false,
+            payload: undefined
+        }
+
 
         if (key === Direction.up) playerCopy.y -= 1
         if (key === Direction.down) playerCopy.y += 1
         if (key === Direction.left) playerCopy.x -= 1
         if (key === Direction.right) playerCopy.x += 1
 
+        // world edge
         if (playerCopy.x < 0
             || playerCopy.x >= this.GameField.length
             || playerCopy.y < 0
             || playerCopy.y >= this.GameField.length) {
-            return {message: actionResult.worldEdge}
+            result.message = actionResult.worldEdge
+            result.isMessage = true;
+            console.log(result)
+            return result
         }
 
         const possibleLocation: GameCell = this.GameField[playerCopy.x][playerCopy.y]
@@ -73,13 +87,26 @@ export class GameField {
             possibleLocation.isPlayer = true;
             this.Player = JSON.parse(JSON.stringify(playerCopy))
         }
-
-        if (possibleLocation.content === Content.tree) return {message: actionResult.tree}
-        if (possibleLocation.content === Content.rock) return {message: actionResult.rock}
-        if (possibleLocation.content === Content.enemy) return this.enemyInteraction(possibleLocation)
+        // tree
+        if (possibleLocation.content === Content.tree) {
+            result.message = actionResult.tree
+            result.isMessage = true
+        }
+        // rock
+        if (possibleLocation.content === Content.rock) {
+            result.message = actionResult.rock
+            result.isMessage = true
+        }
+        // enemy
+        if (possibleLocation.content === Content.enemy) {
+            result.isMessage = true // for now after implementing battle fix this
+            result.message = actionResult.enemy
+            // @ts-ignore
+            result.payload = this.enemyInteraction(possibleLocation)
+        }
 
         this.setPlayer(this.Player)
-        return
+        return result
     }
 
     private fillField() {
@@ -154,12 +181,7 @@ export class GameField {
         }
     }
 
-    enemyInteraction(location: GameCell) {
-        const enemy = this.enemies.find(enemy => enemy.x === location.x && enemy.y === location.y)
-        console.log(enemy)
-        return {
-            message: actionResult.enemy,
-            value: enemy
-        }
+    enemyInteraction(location: GameCell): Enemy | undefined {
+        return this.enemies.find(enemy => enemy.x === location.x && enemy.y === location.y)
     }
 }

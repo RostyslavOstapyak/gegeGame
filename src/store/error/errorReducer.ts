@@ -1,31 +1,25 @@
 import {ERROR_CLEAR, ERROR_SET} from "./errorActions";
-import {Enemy} from "../../utils/enemy";
+import {actionResult, actionResultInterface} from "../../utils/gameField";
 
 
-export interface errorInterface {
-    message: string
-    value: Enemy | null
-
+const initialState: actionResultInterface = {
+    message: actionResult.empty,
+    payload: undefined,
+    isError: false,
+    isMessage: false,
 }
 
-const initialState = {
-    message: "",
-    value: null
-}
-
-export function errorReducer(state: errorInterface = initialState, action: any) {
+export function errorReducer(state: actionResultInterface = initialState, action: any) {
     switch (action.type) {
         case ERROR_SET:
             return {
                 ...state,
-                message: action.payload.message,
-                value: action.payload.value
+                ...action.payload,
             }
         case ERROR_CLEAR :
             return {
                 ...state,
-                message: "",
-                value: null
+                ...initialState
             }
         default:
             return {...state}

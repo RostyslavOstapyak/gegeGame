@@ -26,7 +26,7 @@ const Dialog = () => {
     return (
         <div className="dialog">
             <div className="dialog__field">
-                <h3 className="dialog__content">{message}</h3>
+                <h3 className="dialog__content">{item ? message : "Дарма потрачений час, ви нічого не знайшли :("}</h3>
                 {item && <div>
                     {item.img &&
                         <img
@@ -42,13 +42,14 @@ const Dialog = () => {
                     <br/>
                 </div>
                 }
-                <button className="dialog__button" onClick={handlerAccept}>Accept Item</button>
+                <div className="dialog__buttons-wrapper">
+                    {item && <button className="dialog__button" onClick={handlerAccept}>Accept Item</button>}
 
-                <button
-                    className="dialog__button"
-                    onClick={handlerDismiss}>Dismiss
-                </button>
-                {/*}*/}
+                    <button
+                        className="dialog__button"
+                        onClick={handlerDismiss}>Dismiss
+                    </button>
+                </div>
             </div>
         </div>
     );

@@ -1,6 +1,4 @@
 // first place most common last place most rare
-import {GameField} from "./gameField";
-
 const itemsQuality = [
     "Old",
     "New",

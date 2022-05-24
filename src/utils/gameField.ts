@@ -181,6 +181,8 @@ export class GameField {
     }
 
     enemyInteraction(location: GameCell): Enemy | undefined {
+        this.GameField[location.x][location.y].content = Content.empty
+        this.updateField()
         return this.enemies.find(enemy => enemy.x === location.x && enemy.y === location.y)
     }
 }

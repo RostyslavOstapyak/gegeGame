@@ -31,12 +31,13 @@ export class Item {
 
     constructor(level: number) {
         // don't change order cuz it mint brake
+        this.level = level + 1
         this.type = this.generateType()
         this.quality = this.generateQuality()
         this.properties = this.generateProperties()
         this.name = this.generateName()
         this.id = Math.random()
-        this.level = level + 1
+
         this.price = this.generatePrice()
         // this one should be updated
     }
@@ -53,8 +54,7 @@ export class Item {
         // this one returns NaN fix it
         const qualityModifier = itemsQuality.indexOf(this.quality)
         if (this.type === "sword" || this.type === "secondary") result.damage = true
-        if (result.damage) result.value = this.level * (qualityModifier + Math.floor(Math.random() * 10))
-
+        result.value = this.level * (qualityModifier + Math.floor(Math.random() * 5))
         return result
     }
 
@@ -79,7 +79,7 @@ export class Item {
     }
 
     generatePrice(): number {
-        const qualityModifier = itemsQuality.indexOf(this.quality)
-        return this.level * qualityModifier + Math.floor(Math.random() * 10)
+        const qualityModifier = itemsQuality.indexOf(this.quality) * this.level
+        return Number(qualityModifier + Math.floor(Math.random() * 10))
     }
 }

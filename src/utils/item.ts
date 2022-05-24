@@ -31,6 +31,17 @@ interface itemPropertiesInterface {
 }
 
 
+interface itemInterface {
+    name: string
+    quality: string
+    type: string
+    properties: itemPropertiesInterface
+    price: number
+    id: number
+    level: number
+    image: itemImage
+}
+
 export class Item {
     name: string
     quality: string
@@ -41,9 +52,8 @@ export class Item {
     level: number
     image: itemImage
 
-    constructor(level: number) {
-        // don't change order cuz it mint brake
-        this.level = level + 1
+    constructor(itemData?: itemInterface) {
+        this.level = 1
         this.type = this.generateType()
         this.quality = this.generateQuality()
         this.properties = this.generateProperties()
@@ -51,8 +61,21 @@ export class Item {
         this.id = Math.random()
         this.price = this.generatePrice()
         this.image = this.generateImageLink()
-        // this one should be updated
+
+        if (itemData) {
+            const {level, type, quality, properties, name, id, price, image} = itemData;
+
+            this.level = level;
+            this.type = type;
+            this.quality = quality
+            this.properties = properties
+            this.name = name
+            this.id = id
+            this.price = price
+            this.image = image
+        }
     }
+
 
     getItem() {
         return this
@@ -114,3 +137,14 @@ export class Item {
         }
     }
 }
+
+export const baseWeapon: Item = new Item({
+    name: "Old sword",
+    quality: "Old",
+    type: "sword",
+    properties: {damage: true, value: 5},
+    price: 1,
+    id: 1,
+    level: 1,
+    image: itemImage.sword,
+})

@@ -1,4 +1,4 @@
-import React, {Dispatch, FC, SetStateAction, useState} from 'react';
+import React, {Dispatch, FC, SetStateAction} from 'react';
 import './inventory.css'
 import PlayerGear from "../playerGear/PlayerGear";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,6 +12,7 @@ interface propsInterface {
 }
 
 let currentItem: any;
+
 const Inventory: FC<propsInterface> = ({onClose}) => {
 
 
@@ -26,9 +27,7 @@ const Inventory: FC<propsInterface> = ({onClose}) => {
     const dropHandler = (item: inventoryCellInterface) => {
         if (!currentItem) return
         if (player.isInventorySlotFree(item.id)) {
-            console.log(item.id)
-            const updatedPlayer = player.addItemToInventory(currentItem, item.id)
-            console.log(updatedPlayer)
+            const updatedPlayer = player.changeItemSlot(currentItem, item.id)
             dispatch(setPlayerCreator(updatedPlayer))
         }
         currentItem = null;

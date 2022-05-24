@@ -1,9 +1,21 @@
 import {Content} from "./content";
-import {Item} from "./item";
+import {baseWeapon, Item} from "./item";
 
 export interface inventoryCellInterface {
     id: number
     value: Item | null
+}
+
+interface playerInterface {
+    x: number;
+    y: number;
+    content: Content;
+    inventory: inventoryCellInterface[];
+    head: Item | null;
+    armor: Item | null;
+    boots: Item | null;
+    weapon: Item | null;
+    secondary: Item | null;
 }
 
 export class Player {
@@ -17,9 +29,10 @@ export class Player {
     weapon: Item | null;
     secondary: Item | null;
 
-    constructor(x: number, y: number) {
-        this.x = x;
-        this.y = x;
+    constructor(playerData?: playerInterface | undefined) {
+
+        this.x = 5;
+        this.y = 5;
         this.content = Content.player;
         this.inventory = this.generateInventory()
         this.head = null;
@@ -27,21 +40,36 @@ export class Player {
         this.weapon = null; //replace with broken sword after creation one
         this.secondary = null;
         this.boots = null;
+
+        if (playerData) {
+            const {inventory, head, armor, weapon, secondary, boots} = playerData
+            this.content = Content.player;
+            this.inventory = JSON.parse(JSON.stringify(inventory))
+            this.head = head
+            this.armor = armor
+            this.weapon = weapon
+            this.secondary = secondary
+            this.boots = boots
+        }
+
     }
 
 
-    addItemToInventory(item: any, position: number = 0) {
-        if (position) {
-            this.inventory[position].value = {...item.value}
-            this.inventory[item.id].value = null
-            return this
-        }
+    addItemToInventory(item: Item) {
+
         const {inventory} = this
         let possibleCell = inventory.find(cell => cell.value === null)
 
         if (possibleCell) {
-            // @ts-ignore
-            this.inventory[possibleCell.id].value = {...item}
+            this.inventory[possibleCell.id].value = new Item(item)
+        }
+        return this
+    }
+
+    changeItemSlot(item: inventoryCellInterface, position: number) {
+        if (item.value) {
+            this.inventory[position].value = new Item(item.value)
+            this.inventory[item.id].value = null
         }
         return this
     }
@@ -51,9 +79,9 @@ export class Player {
     }
 
     private generateInventory(): inventoryCellInterface[] {
-        const result = []
+        const result: inventoryCellInterface[] = [{id: 0, value: baseWeapon}]
 
-        for (let i = 0; i < 100; i++) {
+        for (let i = 1; i < 100; i++) {
             const emptyInventoryCell = {
                 id: i,
                 value: null
@@ -62,6 +90,6 @@ export class Player {
         }
         return result
     }
-
-
 }
+
+export const initialPlayer = new Player()

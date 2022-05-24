@@ -1,7 +1,6 @@
 import {GameCell} from "./gameCell";
-import {Player} from "./player";
+import {initialPlayer, Player} from "./player";
 import {Content} from "./content";
-import {initialPlayer} from "./initialPlayer";
 import {Enemy} from "./enemy";
 
 export enum Direction {

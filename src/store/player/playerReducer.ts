@@ -1,6 +1,5 @@
-import {Player} from "../../utils/player";
+import {initialPlayer, Player} from "../../utils/player";
 import {PLAYER_SET_PLAYER} from "./playerActions";
-import {initialPlayer} from "../../utils/initialPlayer";
 
 
 export interface playerInterface {
@@ -18,7 +17,7 @@ export function playerReducer(state = initialState, action: any) {
         case PLAYER_SET_PLAYER:
             return {
                 ...state,
-                player: action.payload
+                player: new Player(action.payload)
             }
         default:
             return {...state}

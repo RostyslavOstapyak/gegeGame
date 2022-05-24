@@ -22,7 +22,7 @@ export class Enemy {
     }
 
     private generateTreasure(): Item | number {
-        if (Math.random() * 2 > 1) return new Item(this.level)
+        if (Math.random() * 2 > 1) return new Item()
         return 0
     }
 

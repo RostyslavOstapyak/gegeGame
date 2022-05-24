@@ -19,15 +19,15 @@ const Dialog = () => {
     }
 
 
-    const {message} = content
-    const item = content.payload.treasure ? content.payload.treasure : null
-
+    const item = content.payload ? content.payload.treasure : null
+    console.log(item)
+    const message = content.message
 
     return (
         <div className="dialog">
             <div className="dialog__field">
-                <h3 className="dialog__content">{item ? message : "Дарма потрачений час, ви нічого не знайшли :("}</h3>
-                {item && <div>
+                <h3 className="dialog__content">{message}</h3>
+                {Boolean(item) && <div>
                     {item.img &&
                         <img
                             src={`../../assets/${item.name}.jpg`}
@@ -43,7 +43,7 @@ const Dialog = () => {
                 </div>
                 }
                 <div className="dialog__buttons-wrapper">
-                    {item && <button className="dialog__button" onClick={handlerAccept}>Accept Item</button>}
+                    {Boolean(item) && <button className="dialog__button" onClick={handlerAccept}>Accept Item</button>}
 
                     <button
                         className="dialog__button"

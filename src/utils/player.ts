@@ -23,6 +23,15 @@ interface gearConfigInterface {
     dragItem?: inventoryCellInterface | null
 }
 
+interface statsInterface {
+    currentHp: number
+    maxHp: number
+    physicalDamage: number
+    elementalDamage: number
+    armour: number
+    elementalDefence: number
+}
+
 export class Player {
     x: number;
     y: number;
@@ -33,6 +42,7 @@ export class Player {
     boots: Item | null;
     weapon: Item | null;
     secondary: Item | null;
+    stats: statsInterface
 
     constructor(playerData?: playerInterface | undefined) {
 
@@ -45,6 +55,7 @@ export class Player {
         this.weapon = null; //replace with broken sword after creation one
         this.secondary = null;
         this.boots = null;
+        this.stats = this.calcStats()
 
         if (playerData) {
             const {inventory, head, armor, weapon, secondary, boots} = playerData
@@ -105,6 +116,18 @@ export class Player {
             this.inventory[dragItem.id].value = null
         }
         return this
+    }
+
+    calcStats(): statsInterface {
+
+        return {
+            currentHp: 0,
+            maxHp: 100,
+            physicalDamage: 0,
+            elementalDamage: 0,
+            armour: 0,
+            elementalDefence: 0,
+        }
     }
 }
 

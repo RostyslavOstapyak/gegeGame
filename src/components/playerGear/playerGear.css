@@ -3,7 +3,23 @@
     height: 100%;
     background-color: #444444;
     border-radius: 0 12px 12px 0;
+}
+
+.player-gear__field {
+    width: 100%;
+    height: 100%;
+    max-height: 60vh;
     position: relative;
+    background: url("https://w7.pngwing.com/pngs/563/61/png-transparent-vitruvian-man-graphy-leonardo-da-vinci-photography-hand-monochrome.png");
+    background-size: contain;
+}
+
+.player-gear__field {
+    background-position: center;
+}
+
+.player-gear__field {
+    background-repeat: no-repeat;
 }
 
 .gear__cell {
@@ -22,23 +38,48 @@
 }
 
 .armor {
-    top: 40%;
+    top: 45%;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .boots {
-    top: 60%;
+    top: 70%;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .weapon {
-    top: 40%;
+    top: 45%;
     left: 10%;
 }
 
 .secondary {
-    top: 40%;
+    top: 45%;
     left: 70%;
+}
+
+.stats {
+    bottom: 15vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5em;
+}
+
+.stats__hp {
+    width: 100%;
+    text-align: center;
+    margin: 1em;
+    position: relative;
+}
+
+.stats__hp_bar {
+    display: block;
+    height: 10px;
+    border: 1px solid black;
+    margin: 0;
+    background-color: red;
 }

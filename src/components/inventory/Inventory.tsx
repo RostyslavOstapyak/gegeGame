@@ -64,7 +64,7 @@ const Inventory: FC<propsInterface> = ({onClose}) => {
                             <InventoryCell key={el.id} item={el}/>
                         </li>)}
                 </ul>
-                <div className="inventory__trash"/>
+                {/*<div className="inventory__trash"/>*/}
                 <PlayerGear/>
             </div>
         </div>

@@ -18,6 +18,11 @@ interface playerInterface {
     secondary: Item | null;
 }
 
+interface gearConfigInterface {
+    gearSlotName: string
+    dragItem?: inventoryCellInterface | null
+}
+
 export class Player {
     x: number;
     y: number;
@@ -89,6 +94,17 @@ export class Player {
             result.push(emptyInventoryCell)
         }
         return result
+    }
+
+    setGear(gearConfig: gearConfigInterface) {
+        if (!gearConfig.dragItem) return this
+        const {gearSlotName, dragItem} = gearConfig
+        if (gearSlotName === dragItem.value!.slot) {
+            // @ts-ignore
+            this[gearSlotName] = new Item(dragItem.value);
+            this.inventory[dragItem.id].value = null
+        }
+        return this
     }
 }
 

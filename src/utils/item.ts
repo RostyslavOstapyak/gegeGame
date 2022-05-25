@@ -1,4 +1,12 @@
-// first place most common last place most rare
+export enum slots {
+    head = "head",
+    armor = "armor",
+    boots = "boots",
+    weapon = "weapon",
+    secondary = "secondary",
+    money = "money",
+}
+
 const itemsQuality = [
     "Old",
     "New",
@@ -30,7 +38,6 @@ interface itemPropertiesInterface {
     value: number
 }
 
-
 interface itemInterface {
     name: string
     quality: string
@@ -40,6 +47,7 @@ interface itemInterface {
     id: number
     level: number
     image: itemImage
+    slot: slots
 }
 
 export class Item {
@@ -51,6 +59,7 @@ export class Item {
     id: number
     level: number
     image: itemImage
+    slot: slots
 
     constructor(itemData?: itemInterface) {
         this.level = 1
@@ -61,6 +70,7 @@ export class Item {
         this.id = Math.random()
         this.price = this.generatePrice()
         this.image = this.generateImageLink()
+        this.slot = this.getItemSlot()
 
         if (itemData) {
             const {level, type, quality, properties, name, id, price, image} = itemData;
@@ -86,7 +96,7 @@ export class Item {
             damage: false,
             value: 0
         }
-        // this one returns NaN fix it
+
         const qualityModifier = itemsQuality.indexOf(this.quality)
         if (this.type === "sword" || this.type === "secondary") result.damage = true
         result.value = this.level * (qualityModifier + Math.floor(Math.random() * 5))
@@ -119,6 +129,7 @@ export class Item {
     }
 
     generateImageLink() {
+
         switch (this.type) {
             case itemsType[0]:
                 return this.image = itemImage.sword
@@ -136,9 +147,27 @@ export class Item {
                 return this.image = itemImage.none
         }
     }
+
+    getItemSlot(): slots {
+        switch (this.type) {
+            case (itemsType[0]):
+                return this.slot = slots.weapon
+            case (itemsType[1]):
+                return this.slot = slots.secondary
+            case (itemsType[2]):
+                return this.slot = slots.head
+            case (itemsType[3]):
+                return this.slot = slots.armor
+            case (itemsType[4]):
+                return this.slot = slots.boots
+            default:
+                return slots.money
+        }
+    }
 }
 
-export const baseWeapon: Item = new Item({
+export let baseWeapon: Item;
+baseWeapon = new Item({
     name: "Old sword",
     quality: "Old",
     type: "sword",
@@ -147,4 +176,5 @@ export const baseWeapon: Item = new Item({
     id: 1,
     level: 1,
     image: itemImage.sword,
-})
+    slot: slots.weapon,
+});

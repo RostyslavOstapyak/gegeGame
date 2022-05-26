@@ -79,6 +79,7 @@ export class Player {
         if (possibleCell) {
             this.inventory[possibleCell.id].value = new Item(item)
         }
+        // add error if no cells found
         return this
     }
 
@@ -97,7 +98,7 @@ export class Player {
     private generateInventory(): inventoryCellInterface[] {
         const result: inventoryCellInterface[] = [{id: 0, value: baseWeapon}]
 
-        for (let i = 1; i < 100; i++) {
+        for (let i = 1; i < 99; i++) {
             const emptyInventoryCell = {
                 id: i,
                 value: null
